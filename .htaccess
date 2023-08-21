@@ -1,0 +1,22 @@
+DirectoryIndex index.html index.php
+
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+<IfModule mod_alias.c>
+    # Restrict access to VCS directories
+    RedirectMatch 404 /\\.(svn|git|hg|bzr|cvs)(/|$)
+
+    # Restrict access to root folder files
+    RedirectMatch 404 /(composer\.(json|lock|phar)|README\.md|\.gitignore|.*\.dist|\.env.*)$
+</IfModule>
+
+AuthType Basic
+AuthName "Please login."
+AuthUserFile /path/to/.htpasswd
+
+<RequireAny>
+    Require expr %{THE_REQUEST} =~ m#.*?\s+\/api.*?#
+    Require valid-user
+</RequireAny>
